@@ -44,19 +44,16 @@ public class CountriesJsonToGraphParser {
 
             while (parser.nextToken() != JsonToken.END_ARRAY) {
                 final Country country = parseCountry(parser);
-                if (!graph.containsVertex(country.code)) {
-                    graph.addVertex(country.code);
-                }
+                graph.addVertex(country.code);
 
                 if (!country.borderCountries.isEmpty()) {
                     country.borderCountries.forEach((borderCountryCode) -> {
-                        if (!graph.containsVertex(borderCountryCode)) {
-                            graph.addVertex(borderCountryCode);
-                        }
+                        graph.addVertex(borderCountryCode);
                         graph.addEdge(country.code, borderCountryCode);
                     });
                 }
             }
+
             parser.close();
             log.info("JSON to Graph: countries={}, borders={}", graph.vertexSet().size(), graph.edgeSet().size());
             return graph;
@@ -122,22 +119,19 @@ public class CountriesJsonToGraphParser {
                 JsonNode countryNameNode = countryNode.findValue(COUNTRY_NAME_FIELD_NAME);
                 if (countryNameNode != null) {
                     final String countryName = countryCode(countryNameNode.asText());
-                    if (!graph.containsVertex(countryName)) {
-                        graph.addVertex(countryName);
-                    }
+                    graph.addVertex(countryName);
 
                     JsonNode borderCountries = countryNode.get(COUNTRY_BORDERS_FIELD_NAME);
                     if (borderCountries != null) {
                         borderCountries.forEach((borderCountryNode) -> {
                             String borderCountry = countryCode(borderCountryNode.asText());
-                            if (!graph.containsVertex(borderCountry)) {
-                                graph.addVertex(borderCountry);
-                            }
+                            graph.addVertex(borderCountry);
                             graph.addEdge(countryName, borderCountry);
                         });
                     }
                 }
             });
+
             log.info("JSON to Graph: countries={}, borders={}", graph.vertexSet().size(), graph.edgeSet().size());
             return graph;
         } catch (IOException e) {
