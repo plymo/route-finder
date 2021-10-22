@@ -114,7 +114,7 @@ public class CountriesJsonToGraphParser {
             final JsonNode tree = objectMapper.readTree(jsonUrl);
             final DefaultDirectedGraph<String, DefaultEdge> graph = new DefaultDirectedGraph<>(DefaultEdge.class);
 
-            if (tree == null) {
+            if (tree == null || tree.isEmpty()) {
                 throw new CountriesJsonDataParsingException("Cannot parse input JSON file with countries");
             }
 

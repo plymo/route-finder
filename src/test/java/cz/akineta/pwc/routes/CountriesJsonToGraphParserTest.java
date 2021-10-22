@@ -84,8 +84,8 @@ public class CountriesJsonToGraphParserTest {
 
     @Test
     public void parseByTreeEmptyJson() {
-        DefaultDirectedGraph<String, DefaultEdge> graph = PARSER.parseByTree(getResource("countries-empty.json"));
-        assertThat(graph.vertexSet().size(), is(equalTo(0)));
+        Assertions.assertThrows(CountriesJsonDataParsingException.class,
+                () -> PARSER.parseByTree(getResource("countries-empty.json")));
     }
 
     @Test

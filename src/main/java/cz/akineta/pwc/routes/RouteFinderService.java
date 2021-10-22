@@ -6,6 +6,7 @@ import cz.akineta.pwc.routes.exceptions.InvalidOriginException;
 import cz.akineta.pwc.routes.exceptions.NoLandCrossingException;
 import cz.akineta.pwc.routes.exceptions.RouteNotFoundException;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.jgrapht.GraphPath;
 import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
 import org.jgrapht.graph.DefaultDirectedGraph;
@@ -40,16 +41,14 @@ public class RouteFinderService {
         return createRoute(path.getVertexList());
     }
 
-    private void checkOrigin(String origin) {
-        if (origin == null || origin.isEmpty()
-                || !countriesGraph.containsVertex(origin)) {
+    private void checkOrigin(final String origin) {
+        if (StringUtils.isBlank(origin) || !countriesGraph.containsVertex(origin)) {
             throw new InvalidOriginException("Origin country '" + origin + "' not found");
         }
     }
 
-    private void checkDestination(String destination) {
-        if (destination == null || destination.isEmpty()
-                || !countriesGraph.containsVertex(destination)) {
+    private void checkDestination(final String destination) {
+        if (StringUtils.isBlank(destination) || !countriesGraph.containsVertex(destination)) {
             throw new InvalidDestinationException("Destination country '" + destination + "' not found");
         }
     }
@@ -57,12 +56,12 @@ public class RouteFinderService {
     private GraphPath<String, DefaultEdge> getShortestPath(final String origin, final String destination) {
         final GraphPath<String, DefaultEdge> path = dijkstra.getPath(origin, destination);
         if (path == null) {
-            throw new RouteNotFoundException("Route from '" + origin + "' to '" + destination + "' does not exists");
+            throw new RouteNotFoundException("Route from '" + origin + "' to '" + destination + "' does not exist");
         }
         return path;
     }
 
-    private RouteDto createRoute(List<String> vertexes) {
+    private RouteDto createRoute(final List<String> vertexes) {
         return new RouteDto(vertexes);
     }
 

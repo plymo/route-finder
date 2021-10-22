@@ -23,7 +23,7 @@ public class RouteFinderApplication {
     }
 
     @Bean
-    public RouteFinderService routeFinderService(ObjectMapper objectMapper) {
+    public RouteFinderService routeFinderService(final ObjectMapper objectMapper) {
         return new RouteFinderService(new CountriesJsonToGraphParser(objectMapper).parseByTokens(jsonUrl));
     }
 
