@@ -33,8 +33,7 @@ public class CountriesJsonToGraphParser {
         }
         log.debug("Loading graph from: {}", jsonUrl);
 
-        try {
-            final JsonParser parser = objectMapper.tokenStreamFactory().createParser(jsonUrl);
+        try (final JsonParser parser = objectMapper.tokenStreamFactory().createParser(jsonUrl)) {
             final DefaultDirectedGraph<String, DefaultEdge> graph = new DefaultDirectedGraph<>(DefaultEdge.class);
 
             final JsonToken startArrayToken = parser.nextToken();
@@ -54,7 +53,6 @@ public class CountriesJsonToGraphParser {
                 }
             }
 
-            parser.close();
             log.info("JSON to Graph: countries={}, borders={}", graph.vertexSet().size(), graph.edgeSet().size());
             return graph;
         } catch (IOException e) {
